@@ -1,0 +1,98 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile for ChatRoom servers",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Unique Firebase Authentication UID of the user"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User's chosen display name or nickname"
+        },
+        "email": {
+          "type": "string",
+          "description": "User's Google Account email address"
+        },
+        "photoUrl": {
+          "type": "string",
+          "description": "Optional URL to user's profile avatar"
+        },
+        "status": {
+          "type": "string",
+          "description": "User bio or online status"
+        },
+        "avatarIndex": {
+          "type": "integer",
+          "description": "Selected avatar style index (0-5)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when user account was created (FieldValue.serverTimestamp())"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when user account was last updated (FieldValue.serverTimestamp())"
+        }
+      },
+      "required": ["userId", "displayName", "email", "createdAt"]
+    },
+    "ChatServerEntry": {
+      "title": "ChatServerEntry",
+      "description": "A saved or hosted chat server belonging to a user",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the server"
+        },
+        "host": {
+          "type": "string",
+          "description": "IP address or host of the server"
+        },
+        "port": {
+          "type": "integer",
+          "description": "Port of the chat server"
+        },
+        "hostedLocally": {
+          "type": "boolean",
+          "description": "True if hosted locally by this user"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the server was registered"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the server was updated"
+        }
+      },
+      "required": ["userId", "name", "host", "port", "hostedLocally", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "User profile document isolated per authenticated user UID"
+    },
+    "/users/{userId}/servers/{serverId}": {
+      "schema": {
+        "$ref": "#/entities/ChatServerEntry"
+      },
+      "description": "Chat servers hosted or saved by the user"
+    }
+  }
+}
